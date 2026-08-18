@@ -64,6 +64,10 @@ section h3 {
   font-family: 'BricolageGrotesque', sans-serif;
   font-size: 1.1rem; font-weight: 700; margin: 20px 0 12px; color: var(--accent);
 }
+section h4 {
+  font-family: 'BricolageGrotesque', sans-serif;
+  font-size: 0.95rem; font-weight: 700; margin: 16px 0 8px; color: var(--ink);
+}
 
 /* ===== Cards ===== */
 .card-grid {
@@ -84,8 +88,30 @@ section h3 {
 .down { color: var(--red); }
 .neutral { color: var(--yellow); }
 
+/* ===== Conclusion Cards ===== */
+.conclusion {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 14px 18px; margin: 16px 0;
+  border-radius: var(--radius); border-left: 4px solid;
+  background: var(--card-bg);
+}
+.conclusion.bullish { border-left-color: var(--green); }
+.conclusion.bearish { border-left-color: var(--red); }
+.conclusion.neutral { border-left-color: var(--yellow); }
+.conclusion.division { border-left-color: var(--orange); }
+.conclusion .conclusion-tag {
+  display: inline-block; white-space: nowrap;
+  font-size: 0.75rem; font-weight: 700; padding: 2px 10px;
+  border-radius: 10px; line-height: 1.6;
+}
+.conclusion.bullish .conclusion-tag { background: var(--green); color: #0b0e14; }
+.conclusion.bearish .conclusion-tag { background: var(--red); color: #fff; }
+.conclusion.neutral .conclusion-tag { background: var(--yellow); color: #0b0e14; }
+.conclusion.division .conclusion-tag { background: var(--orange); color: #0b0e14; }
+.conclusion .conclusion-text { font-size: 0.88rem; line-height: 1.5; color: var(--muted); }
+
 /* ===== Tables ===== */
-.table-wrap { overflow-x: auto; overflow-y: auto; max-height: 600px; margin: 16px 0; border: 1px solid var(--rule); border-radius: var(--radius); }
+.table-wrap { overflow-x: auto; overflow-y: auto; margin: 16px 0; border: 1px solid var(--rule); border-radius: var(--radius); }
 table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 500px; }
 table thead { position: sticky; top: 0; z-index: 2; }
 table th { background: var(--bg2); padding: 10px 14px; text-align: left; font-family: 'BricolageGrotesque', sans-serif; font-weight: 700; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid var(--rule); color: var(--muted); }
@@ -188,6 +214,11 @@ footer .sources a { word-break: break-all; }
     <figcaption>图1: A股主要指数涨跌幅（%）</figcaption>
     <div id="chart-a-indices" class="chart-box"></div>
   </figure>
+  <!-- A股大盘结论 -->
+  <div class="conclusion {{A_CONCLUSION_CLASS}}">
+    <span class="conclusion-tag">{{A_CONCLUSION_TAG}}</span>
+    <span class="conclusion-text">{{A_CONCLUSION_TEXT}}</span>
+  </div>
 </section>
 
 <!-- ===== 3. A股板块 ===== -->
@@ -213,6 +244,11 @@ footer .sources a { word-break: break-all; }
     <figcaption>图3: 美股三大指数涨跌幅（%）</figcaption>
     <div id="chart-us-indices" class="chart-box"></div>
   </figure>
+  <!-- 美股大盘结论 -->
+  <div class="conclusion {{US_CONCLUSION_CLASS}}">
+    <span class="conclusion-tag">{{US_CONCLUSION_TAG}}</span>
+    <span class="conclusion-text">{{US_CONCLUSION_TEXT}}</span>
+  </div>
 </section>
 
 <!-- ===== 5. 美股板块 ===== -->
@@ -229,8 +265,12 @@ footer .sources a { word-break: break-all; }
 <section>
   <h2>宏观中美对比</h2>
   <p style="color:var(--muted);margin-bottom:16px;font-size:0.88rem;">{{MACRO_SUMMARY}}</p>
-  <!-- 通胀/增长/PMI/利率/就业 对比表 -->
   <div id="macro-content"></div>
+  <!-- 宏观结论 -->
+  <div class="conclusion {{MACRO_CONCLUSION_CLASS}}">
+    <span class="conclusion-tag">{{MACRO_CONCLUSION_TAG}}</span>
+    <span class="conclusion-text">{{MACRO_CONCLUSION_TEXT}}</span>
+  </div>
 </section>
 
 <!-- ===== 7. 持仓分析 ===== -->
@@ -242,12 +282,77 @@ footer .sources a { word-break: break-all; }
     <figcaption>图5: 持仓组合当日涨跌幅（%）</figcaption>
     <div id="chart-holdings" class="chart-box"></div>
   </figure>
+  <!-- 持仓结论 -->
+  <div class="conclusion {{HOLDINGS_CONCLUSION_CLASS}}">
+    <span class="conclusion-tag">{{HOLDINGS_CONCLUSION_TAG}}</span>
+    <span class="conclusion-text">{{HOLDINGS_CONCLUSION_TEXT}}</span>
+  </div>
 </section>
 
-<!-- ===== 8. 期权市场 ===== -->
+<!-- ===== 8. 期权市场（详细） ===== -->
 <section>
   <h2>期权市场</h2>
-  <div id="options-content"></div>
+  <p style="color:var(--muted);margin-bottom:16px;font-size:0.88rem;">A股ETF期权详细数据 + 美股CBOE关键指数</p>
+
+  <h3>A股ETF期权数据</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>ETF</th>
+          <th>标的价</th>
+          <th>IV(%)</th>
+          <th>HV(%)</th>
+          <th>成交量PCR</th>
+          <th>持仓量PCR</th>
+          <th>IV百分位</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 由AI填充: 50ETF/300ETF/500ETF/科创50ETF -->
+        <tr><td>{{OPT_ETF1_NAME}}</td><td>{{OPT_ETF1_PRICE}}</td><td>{{OPT_ETF1_IV}}</td><td>{{OPT_ETF1_HV}}</td><td>{{OPT_ETF1_VPCR}}</td><td>{{OPT_ETF1_OPCR}}</td><td>{{OPT_ETF1_IVPCT}}</td></tr>
+        <tr><td>{{OPT_ETF2_NAME}}</td><td>{{OPT_ETF2_PRICE}}</td><td>{{OPT_ETF2_IV}}</td><td>{{OPT_ETF2_HV}}</td><td>{{OPT_ETF2_VPCR}}</td><td>{{OPT_ETF2_OPCR}}</td><td>{{OPT_ETF2_IVPCT}}</td></tr>
+        <tr><td>{{OPT_ETF3_NAME}}</td><td>{{OPT_ETF3_PRICE}}</td><td>{{OPT_ETF3_IV}}</td><td>{{OPT_ETF3_HV}}</td><td>{{OPT_ETF3_VPCR}}</td><td>{{OPT_ETF3_OPCR}}</td><td>{{OPT_ETF3_IVPCT}}</td></tr>
+        <tr><td>{{OPT_ETF4_NAME}}</td><td>{{OPT_ETF4_PRICE}}</td><td>{{OPT_ETF4_IV}}</td><td>{{OPT_ETF4_HV}}</td><td>{{OPT_ETF4_VPCR}}</td><td>{{OPT_ETF4_OPCR}}</td><td>{{OPT_ETF4_IVPCT}}</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>美股CBOE关键指数</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>指数</th>
+          <th>名称</th>
+          <th>当前值</th>
+          <th>涨跌幅</th>
+          <th>正常范围</th>
+          <th>信号</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 由AI填充: VIX/VVIX/SKEW/PCR/EQ-PCR/0DTE -->
+        <tr><td>VIX</td><td>恐慌指数</td><td>{{VIX_VAL}}</td><td>{{VIX_CHG}}</td><td>10-20</td><td>{{VIX_SIG}}</td></tr>
+        <tr><td>VVIX</td><td>波动率之波动率</td><td>{{VVIX_VAL}}</td><td>{{VVIX_CHG}}</td><td>80-120</td><td>{{VVIX_SIG}}</td></tr>
+        <tr><td>SKEW</td><td>偏度指数</td><td>{{SKEW_VAL}}</td><td>{{SKEW_CHG}}</td><td>100-150</td><td>{{SKEW_SIG}}</td></tr>
+        <tr><td>PCR</td><td>全市场Put/Call</td><td>{{PCR_VAL}}</td><td>{{PCR_CHG}}</td><td>0.7-1.0</td><td>{{PCR_SIG}}</td></tr>
+        <tr><td>EQ-PCR</td><td>股票Put/Call</td><td>{{EQPCR_VAL}}</td><td>{{EQPCR_CHG}}</td><td>0.5-0.7</td><td>{{EQPCR_SIG}}</td></tr>
+        <tr><td>0DTE%</td><td>0日期权占比</td><td>{{ODTE_VAL}}</td><td>{{ODTE_CHG}}</td><td>40-50%</td><td>{{ODTE_SIG}}</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <figure class="chart-figure">
+    <figcaption>图6: 期权PCR与VIX情绪指标</figcaption>
+    <div id="chart-options-pcr" class="chart-box"></div>
+  </figure>
+
+  <!-- 期权多空结论 -->
+  <div class="conclusion {{OPT_CONCLUSION_CLASS}}">
+    <span class="conclusion-tag">{{OPT_CONCLUSION_TAG}}</span>
+    <span class="conclusion-text">{{OPT_CONCLUSION_TEXT}}</span>
+  </div>
 </section>
 
 <!-- ===== 9. 综合评估 ===== -->
