@@ -56,12 +56,25 @@ def action_update_index():
 
 def action_git_push():
     today = get_today()
-    cmds = f"cd {REPO} && git remote set-url origin https://91i55and0:{TOKEN}@github.com/91i55and0/market-review-daily.git && git config user.email bot@trae.cn && git config user.name MarketBot && git add -A && git commit -m '每日深度复盘报告 {today}' 2>/dev/null; git push origin master 2>&1 | tail -3"
+    cmds = f"cd {REPO} && git remote set-url origin https://91i55and0:{TOKEN}@github.com/91i55and0/market-review-daily.git && git config user.email bot@trae.cn && git config user.name MarketBot && git add -A && git commit -m '每日深度复盘报告 {today}' 2>/dev/null; git push origin main 2>&1 | tail -3 && git push origin main:master 2>&1 | tail -3"
     os.system(cmds)
+
+def action_check_exists():
+    """检查今天报告是否已存在，AI据此判断是否要生成"""
+    today = get_today()
+    html = find_report_html(today)
+    if html:
+        fp = os.path.join(REPORTS, html)
+        size = os.path.getsize(fp)
+        print(f"EXISTS=true")
+        print(f"PATH={html}")
+        print(f"SIZE={size}")
+    else:
+        print(f"EXISTS=false")
 
 def action_all():
     action_setup(); action_cleanup(); action_update_index(); action_git_push()
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2: print("用法: python3 daily_infra.py [setup|cleanup|update_index|git_push|all]"); sys.exit(1)
+    if len(sys.argv) < 2: print("用法: python3 daily_infra.py [setup|cleanup|update_index|git_push|check_exists|all]"); sys.exit(1)
     globals()[f"action_{sys.argv[1]}"]()

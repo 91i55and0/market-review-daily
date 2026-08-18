@@ -47,7 +47,7 @@
   (function() {
     var el = document.getElementById('chart-a-indices');
     if (!el) return;
-    var chart = echarts.init(el, null, { renderer: 'svg' });
+    var chart = echarts.init(el);
     var data = [
       { name: '上证指数', value: 0.19 },
       { name: '深证成指', value: -0.56 },
@@ -112,7 +112,7 @@
   (function() {
     var el = document.getElementById('chart-a-sectors');
     if (!el) return;
-    var chart = echarts.init(el, null, { renderer: 'svg' });
+    var chart = echarts.init(el);
     var data = [
       { name: '农林牧渔', value: 3.63 },
       { name: '石油石化', value: 1.92 },
@@ -191,7 +191,7 @@
   (function() {
     var el = document.getElementById('chart-us-indices');
     if (!el) return;
-    var chart = echarts.init(el, null, { renderer: 'svg' });
+    var chart = echarts.init(el);
     var data = [
       { name: 'S&P 500', value: -0.52 },
       { name: '纳斯达克', value: -0.32 },
@@ -255,7 +255,7 @@
   (function() {
     var el = document.getElementById('chart-us-sectors');
     if (!el) return;
-    var chart = echarts.init(el, null, { renderer: 'svg' });
+    var chart = echarts.init(el);
     var data = [
       { name: '能源', value: 0.87 },
       { name: '科技', value: -0.20 },
@@ -327,7 +327,7 @@
   (function() {
     var el = document.getElementById('chart-holdings');
     if (!el) return;
-    var chart = echarts.init(el, null, { renderer: 'svg' });
+    var chart = echarts.init(el);
     var data = [
       { name: '招商银行\n600036', value: 0.24 },
       { name: '太阳纸业\n002078', value: -0.29 },
