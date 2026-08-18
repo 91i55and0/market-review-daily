@@ -6,7 +6,7 @@ from datetime import datetime, timezone, timedelta
 REPO = "/workspace/market-review-daily"
 REPORTS = os.path.join(REPO, "reports")
 INDEX = os.path.join(REPO, "index.html")
-TOKEN = "TOKEN_REMOVED"
+TOKEN = os.environ.get("GH_TOKEN", "")
 
 def get_today():
     bj = datetime.now(timezone(timedelta(hours=8)))
@@ -56,7 +56,7 @@ def action_update_index():
 
 def action_git_push():
     today = get_today()
-    cmds = f"cd {REPO} && git remote set-url origin https://91i55and0:{TOKEN}@github.com/91i55and0/market-review-daily.git && git config user.email bot@trae.cn && git config user.name MarketBot && git add -A && git commit -m '每日深度复盘报告 {today}' 2>/dev/null; git push origin main 2>&1 | tail -3"
+    cmds = f"cd {REPO} && git remote set-url origin https://91i55and0:{TOKEN}@github.com/91i55and0/market-review-daily.git && git config user.email bot@trae.cn && git config user.name MarketBot && git add -A && git commit -m '每日深度复盘报告 {today}' 2>/dev/null; git push origin master 2>&1 | tail -3"
     os.system(cmds)
 
 def action_all():
