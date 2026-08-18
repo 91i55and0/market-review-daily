@@ -4,17 +4,272 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>每日深度复盘报告模板</title>
+<title>每日深度复盘报告 — {{DATE}}</title>
 <style>
+/* ===== Fonts ===== */
+@font-face { font-family: 'BricolageGrotesque'; src: url('./_shared/fonts/BricolageGrotesque-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; }
+@font-face { font-family: 'BricolageGrotesque'; src: url('./_shared/fonts/BricolageGrotesque-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; }
+@font-face { font-family: 'InstrumentSans'; src: url('./_shared/fonts/InstrumentSans-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; }
+@font-face { font-family: 'InstrumentSans'; src: url('./_shared/fonts/InstrumentSans-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; }
+@font-face { font-family: 'JetBrainsMono'; src: url('./_shared/fonts/JetBrainsMono-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; }
+@font-face { font-family: 'JetBrainsMono'; src: url('./_shared/fonts/JetBrainsMono-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; }
+
+/* ===== CSS Variables ===== */
 :root {
   --bg: #0b0e14; --bg2: #131820; --ink: #e8edf5; --muted: #7a8aa0;
   --rule: #1e2a3a; --accent: #4fc3f7; --accent2: #f06292;
-  --green: #66bb6a; --red: #ef5350; --yellow: #ffd54f;
-  --card-bg: #151c28; --card-border: #1e2d42; --radius: 12px;
+  --green: #66bb6a; --red: #ef5350; --yellow: #ffd54f; --orange: #ffa726;
+  --card-bg: #151c28; --card-border: #1e2d42; --radius: 12px; --shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'InstrumentSans', sans-serif;
+  font-size: 15px; line-height: 1.7;
+  background: var(--bg); color: var(--ink); padding: 0;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+/* ===== Header ===== */
+header.hero {
+  background: linear-gradient(135deg, #0b0e14 0%, #151c28 50%, #0d1a2e 100%);
+  padding: 48px 0 40px; border-bottom: 1px solid var(--rule); text-align: center;
+}
+header.hero h1 {
+  font-family: 'BricolageGrotesque', sans-serif;
+  font-size: 2.2rem; font-weight: 700; letter-spacing: -0.02em;
+}
+header.hero .subtitle { color: var(--muted); font-size: 0.95rem; margin-top: 8px; }
+header.hero .date-badge {
+  display: inline-block; margin-top: 12px; padding: 4px 16px;
+  background: var(--accent); color: #0b0e14; border-radius: 20px;
+  font-size: 0.85rem; font-weight: 700; font-family: 'JetBrainsMono', monospace;
+}
+
+/* ===== One-liner ===== */
+.oneliner {
+  background: var(--card-bg); border-left: 4px solid var(--accent);
+  padding: 20px 24px; margin: 28px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 1.05rem; font-weight: 600; line-height: 1.5;
+}
+
+/* ===== Section ===== */
+section { margin: 40px 0; }
+section h2 {
+  font-family: 'BricolageGrotesque', sans-serif;
+  font-size: 1.5rem; font-weight: 700; margin-bottom: 20px;
+  padding-bottom: 8px; border-bottom: 2px solid var(--accent); display: inline-block;
+}
+section h3 {
+  font-family: 'BricolageGrotesque', sans-serif;
+  font-size: 1.1rem; font-weight: 700; margin: 20px 0 12px; color: var(--accent);
+}
+
+/* ===== Cards ===== */
+.card-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px; margin: 16px 0;
+}
+.card-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.card-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.card-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+.card {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow);
+}
+.card .card-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+.card .card-value { font-family: 'JetBrainsMono', monospace; font-size: 1.5rem; font-weight: 700; }
+.card .card-sub { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+.up { color: var(--green); }
+.down { color: var(--red); }
+.neutral { color: var(--yellow); }
+
+/* ===== Tables ===== */
+.table-wrap { overflow-x: auto; overflow-y: auto; max-height: 600px; margin: 16px 0; border: 1px solid var(--rule); border-radius: var(--radius); }
+table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 500px; }
+table thead { position: sticky; top: 0; z-index: 2; }
+table th { background: var(--bg2); padding: 10px 14px; text-align: left; font-family: 'BricolageGrotesque', sans-serif; font-weight: 700; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid var(--rule); color: var(--muted); }
+table td { padding: 9px 14px; border-bottom: 1px solid var(--rule); }
+table tbody tr:hover { background: rgba(79, 195, 247, 0.05); }
+
+/* ===== Charts ===== */
+.chart-figure { margin: 24px 0; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 20px; }
+.chart-figure figcaption { font-family: 'BricolageGrotesque', sans-serif; font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: var(--ink); }
+.chart-figure .chart-box { width: 100%; min-height: 400px; }
+.chart-figure .chart-box.tall { min-height: 560px; }
+
+/* ===== Holding Cards ===== */
+.holding-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 16px 18px; }
+.holding-card .h-name { font-family: 'BricolageGrotesque', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 8px; }
+.holding-card .h-code { font-size: 0.78rem; color: var(--muted); font-family: 'JetBrainsMono', monospace; }
+.holding-card .h-price { font-family: 'JetBrainsMono', monospace; font-size: 1.6rem; font-weight: 700; margin: 6px 0; }
+.holding-card .h-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 0.8rem; margin-top: 8px; }
+.holding-card .h-meta span { color: var(--muted); }
+.holding-card .h-meta strong { color: var(--ink); font-family: 'JetBrainsMono', monospace; }
+
+/* ===== Macro Comparison ===== */
+.macro-pair { display: flex; gap: 0; border: 1px solid var(--card-border); border-radius: var(--radius); overflow: hidden; margin: 8px 0; }
+.macro-pair .macro-item { flex: 1; padding: 12px 16px; text-align: center; }
+.macro-pair .macro-item.china { background: rgba(79, 195, 247, 0.08); }
+.macro-pair .macro-item.usa { background: rgba(240, 98, 146, 0.08); }
+.macro-pair .macro-item .m-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.macro-pair .macro-item .m-value { font-family: 'JetBrainsMono', monospace; font-size: 1.3rem; font-weight: 700; margin-top: 2px; }
+.macro-pair .macro-item .m-country { font-size: 0.8rem; margin-top: 2px; }
+
+/* ===== Risk Checklist ===== */
+.risk-list { list-style: none; padding: 0; }
+.risk-list li { padding: 8px 12px 8px 28px; position: relative; border-bottom: 1px solid var(--rule); font-size: 0.88rem; }
+.risk-list li:last-child { border-bottom: none; }
+.risk-list li::before { content: ''; position: absolute; left: 8px; top: 50%; transform: translateY(-50%); width: 8px; height: 8px; border-radius: 50%; }
+.risk-list li.high::before { background: var(--red); }
+.risk-list li.medium::before { background: var(--orange); }
+.risk-list li.low::before { background: var(--yellow); }
+
+/* ===== Event Calendar ===== */
+.event-item { display: flex; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+.event-item:last-child { border-bottom: none; }
+.event-item .event-date { font-family: 'JetBrainsMono', monospace; font-size: 0.82rem; color: var(--accent); min-width: 80px; font-weight: 600; }
+.event-item .event-desc { font-size: 0.88rem; }
+
+/* ===== You Missed ===== */
+.missed-item { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 14px 18px; margin: 8px 0; font-size: 0.9rem; line-height: 1.5; }
+.missed-item .missed-tag { display: inline-block; font-size: 0.7rem; background: var(--accent); color: #0b0e14; padding: 1px 8px; border-radius: 10px; font-weight: 700; margin-right: 6px; }
+
+/* ===== Footer ===== */
+footer { margin-top: 60px; padding: 32px 0; border-top: 1px solid var(--rule); text-align: center; color: var(--muted); font-size: 0.8rem; }
+footer .sources { text-align: left; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+footer .sources h2 { font-size: 1.1rem; margin-bottom: 16px; border-bottom: 1px solid var(--rule); padding-bottom: 8px; }
+footer .sources ol { padding-left: 1.2rem; font-size: 0.82rem; color: var(--muted); }
+footer .sources li { margin-bottom: 0.5rem; overflow-wrap: break-word; word-break: break-all; }
+footer .sources .src-title { color: var(--ink); word-break: normal; }
+footer .sources .src-url { display: block; margin-top: 0.15rem; font-size: 0.8rem; color: var(--accent); word-break: break-all; }
+footer .sources a { word-break: break-all; }
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .container { padding: 0 16px; }
+  header.hero h1 { font-size: 1.5rem; }
+  .card-grid.cols-2, .card-grid.cols-3, .card-grid.cols-4 { grid-template-columns: 1fr; }
+  .holding-card .h-meta { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
-<!-- 模板占位，由脚本填充每日数据 -->
+
+<!-- ===== HEADER ===== -->
+<header class="hero">
+  <div class="container">
+    <h1>每日深度复盘报告</h1>
+    <p class="subtitle">A股 · 美股 · 宏观 · 持仓 · 期权 · 综合评估</p>
+    <span class="date-badge">{{DATE}}</span>
+  </div>
+</header>
+
+<div class="container">
+
+<!-- ===== 1. 一句话总结 ===== -->
+<div class="oneliner">{{SUMMARY}}</div>
+
+<!-- ===== 2. A股大盘 ===== -->
+<section>
+  <h2>A股大盘概览</h2>
+  <div class="card-grid cols-4">
+    <div class="card"><div class="card-label">上证指数</div><div class="card-value">{{SH_VALUE}}</div><div class="card-sub">{{SH_CHG}}</div></div>
+    <div class="card"><div class="card-label">深证成指</div><div class="card-value">{{SZ_VALUE}}</div><div class="card-sub">{{SZ_CHG}}</div></div>
+    <div class="card"><div class="card-label">创业板指</div><div class="card-value">{{CY_VALUE}}</div><div class="card-sub">{{CY_CHG}}</div></div>
+    <div class="card"><div class="card-label">科创50</div><div class="card-value">{{KC_VALUE}}</div><div class="card-sub">{{KC_CHG}}</div></div>
+  </div>
+  <div class="card" style="margin-top:8px;">
+    <div class="card-label">全市场成交额</div>
+    <div class="card-value" style="font-size:1.2rem;">{{VOLUME}}</div>
+    <div class="card-sub">{{VOLUME_CHG}}</div>
+  </div>
+  <figure class="chart-figure">
+    <figcaption>图1: A股主要指数涨跌幅（%）</figcaption>
+    <div id="chart-a-indices" class="chart-box"></div>
+  </figure>
+</section>
+
+<!-- ===== 3. A股板块 ===== -->
+<section>
+  <h2>A股板块涨跌幅</h2>
+  <p style="color:var(--muted);margin-bottom:12px;font-size:0.88rem;">{{SECTOR_SUMMARY}}</p>
+  <figure class="chart-figure">
+    <figcaption>图2: A股申万一级行业涨跌幅（%）</figcaption>
+    <div id="chart-a-sectors" class="chart-box tall"></div>
+  </figure>
+</section>
+
+<!-- ===== 4. 美股大盘 ===== -->
+<section>
+  <h2>美股大盘概览</h2>
+  <p style="color:var(--muted);margin-bottom:12px;font-size:0.88rem;">{{US_DATA_DATE}}</p>
+  <div class="card-grid cols-3">
+    <div class="card"><div class="card-label">S&P 500</div><div class="card-value">{{SPX_VALUE}}</div><div class="card-sub">{{SPX_CHG}}</div></div>
+    <div class="card"><div class="card-label">纳斯达克</div><div class="card-value">{{NDX_VALUE}}</div><div class="card-sub">{{NDX_CHG}}</div></div>
+    <div class="card"><div class="card-label">道琼斯</div><div class="card-value">{{DJI_VALUE}}</div><div class="card-sub">{{DJI_CHG}}</div></div>
+  </div>
+  <figure class="chart-figure">
+    <figcaption>图3: 美股三大指数涨跌幅（%）</figcaption>
+    <div id="chart-us-indices" class="chart-box"></div>
+  </figure>
+</section>
+
+<!-- ===== 5. 美股板块 ===== -->
+<section>
+  <h2>美股板块涨跌幅</h2>
+  <p style="color:var(--muted);margin-bottom:12px;font-size:0.88rem;">{{US_SECTOR_SUMMARY}}</p>
+  <figure class="chart-figure">
+    <figcaption>图4: 美股S&P 500板块涨跌幅（%）</figcaption>
+    <div id="chart-us-sectors" class="chart-box tall"></div>
+  </figure>
+</section>
+
+<!-- ===== 6. 宏观中美对比 ===== -->
+<section>
+  <h2>宏观中美对比</h2>
+  <p style="color:var(--muted);margin-bottom:16px;font-size:0.88rem;">{{MACRO_SUMMARY}}</p>
+  <!-- 通胀/增长/PMI/利率/就业 对比表 -->
+  <div id="macro-content"></div>
+</section>
+
+<!-- ===== 7. 持仓分析 ===== -->
+<section>
+  <h2>持仓分析</h2>
+  <p style="color:var(--muted);margin-bottom:12px;font-size:0.88rem;">6只持仓标的当日表现、PE及52周高低</p>
+  <div id="holdings-content" class="card-grid cols-3"></div>
+  <figure class="chart-figure">
+    <figcaption>图5: 持仓组合当日涨跌幅（%）</figcaption>
+    <div id="chart-holdings" class="chart-box"></div>
+  </figure>
+</section>
+
+<!-- ===== 8. 期权市场 ===== -->
+<section>
+  <h2>期权市场</h2>
+  <div id="options-content"></div>
+</section>
+
+<!-- ===== 9. 综合评估 ===== -->
+<section>
+  <h2>综合评估</h2>
+  <div id="assessment-content"></div>
+</section>
+
+<!-- ===== 自检 ===== -->
+<div id="chart-selfcheck" style="text-align:center;padding:8px;color:var(--muted);font-size:0.85rem;"></div>
+
+</div><!-- /container -->
+
+<!-- ===== FOOTER / 数据来源 ===== -->
+<footer>
+  <div class="sources">
+    <h2>数据来源</h2>
+    <ol id="sources-list"></ol>
+  </div>
+</footer>
+
+<script src="./_shared/js/echarts.min.js"></script>
+<script src="assets/charts.js"></script>
 </body>
 </html>
